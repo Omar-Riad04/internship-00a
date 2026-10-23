@@ -13,22 +13,22 @@
 
 /** Return an array of just the product names. */
 export function getNames(products) {
-  // TODO
+  return products.map(product => product.name);
 }
 
 /** Return only the products that are in stock. */
 export function getInStock(products) {
-  // TODO
+  return products.filter(product => product.inStock);
 }
 
 /** Return the total inventory value: sum of price × qty for every product. */
 export function totalValue(products) {
-  // TODO
+  return products.reduce((total, product) => total + product.price * product.qty, 0);
 }
 
 /** Return the product with this exact name, or undefined. */
 export function findByName(products, name) {
-  // TODO
+  return products.find(product => product.name === name);
 }
 
 /**
@@ -36,12 +36,14 @@ export function findByName(products, name) {
  * The original array must NOT be changed.
  */
 export function sortByPrice(products) {
-  // TODO
+  return [...products].sort((a, b) => a.price - b.price);
 }
 
 /** Return the names of in-stock products in `category`, in UPPERCASE. (chain them!) */
 export function inStockNamesIn(products, category) {
-  // TODO
+  return products
+    .filter(product => product.inStock && product.category === category)
+    .map(product => product.name.toUpperCase());
 }
 
 /**
@@ -50,12 +52,20 @@ export function inStockNamesIn(products, category) {
  * hint: reduce with an object as the starting value
  */
 export function groupByCategory(products) {
-  // TODO
+  return products.reduce((acc, product) => {
+    if (!acc[product.category]) {
+      acc[product.category] = [];
+    }
+    acc[product.category].push(product.name);
+    return acc;
+  }, 
+  {}
+  )
 }
 
 /** Remove duplicates. unique([1, 2, 2, 3, 1]) → [1, 2, 3] */
 export function unique(items) {
-  // TODO
+  return [...new Set(items)];
 }
 
 /**
@@ -64,5 +74,11 @@ export function unique(items) {
  * (You may use Array.from or a loop for this one 🙂)
  */
 export function chunk(items, size) {
-  // TODO
+  
+  
+  return Array.from({ length: Math.ceil(items.length / size) }, (_, i) =>
+   items.slice(i * size, i * size + size)
+
+  )
+  
 }
