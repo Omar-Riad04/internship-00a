@@ -9,12 +9,21 @@
  * - use crypto.randomUUID() for the id (works in browsers and Node)
  */
 export function createTodo(text) {
-  // TODO
+  const trimmedText = text.trim();
+  if (!trimmedText) {
+    throw new Error("Todo text is required");
+  }
+  return {
+    id: crypto.randomUUID(),
+    text: trimmedText,
+    done: false
+  };
 }
 
 /** Return a new array with a new todo added at the END. */
 export function addTodo(todos, text) {
-  // TODO
+  const newTodo = createTodo(text);
+  return [...todos, newTodo]; 
 }
 
 /**
@@ -23,12 +32,19 @@ export function addTodo(todos, text) {
  * hint: map + spread
  */
 export function toggleTodo(todos, id) {
-  // TODO
+  return todos.map(todo => {
+    if (todo.id === id) {
+      return { ...todo, done: !todo.done };
+    }
+    return todo;
+  }
+  )
 }
 
 /** Return a new array without the todo with `id`. */
 export function removeTodo(todos, id) {
-  // TODO
+  return todos.filter(todo => todo.id !== id);
+
 }
 
 /**
@@ -36,7 +52,15 @@ export function removeTodo(todos, id) {
  * "active" = not done. Unknown filters behave like "all".
  */
 export function filterTodos(todos, filter) {
-  // TODO
+  switch (filter) {
+    case "active":
+      return todos.filter(todo => !todo.done);
+    case "done":
+      return todos.filter(todo => todo.done);
+    default:
+      return todos;
+  }
+
 }
 
 /**
@@ -44,10 +68,12 @@ export function filterTodos(todos, filter) {
  * 0 → "0 items left", 1 → "1 item left", 5 → "5 items left"
  */
 export function remainingLabel(todos) {
-  // TODO
+  const count = todos.filter(todo => !todo.done).length;
+  const word = count === 1 ? "item" : "items";
+  return `${count} ${word} left`;
 }
 
 /** Return a new array with all done todos removed. */
 export function clearDone(todos) {
-  // TODO
+  return todos.filter(todo => !todo.done);
 }
