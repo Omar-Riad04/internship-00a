@@ -6,7 +6,7 @@
  * Returns the sum of all arguments (0 if none).
  * sum(1, 2, 3) → 6
  */
-export const sum = undefined; // TODO: replace `undefined` with an arrow function
+export const sum = (...nums) => nums.reduce((total, n) => total + n, 0); // TODO: replace `undefined` with an arrow function
 
 /**
  * Apply a percentage discount. `percent` should DEFAULT to 10.
@@ -14,8 +14,11 @@ export const sum = undefined; // TODO: replace `undefined` with an arrow functio
  * applyDiscount(100)     → 90
  * applyDiscount(80, 25)  → 60
  */
-export function applyDiscount(price, percent) {
-  // TODO
+export function applyDiscount(price, percent=10) {
+
+  const discountedPrice = price - (price * percent) / 100;
+  return Math.round(discountedPrice * 100) / 100;
+
 }
 
 /**
@@ -29,7 +32,13 @@ export function applyDiscount(price, percent) {
  * `start` defaults to 0. The count must NOT be accessible as a property.
  */
 export function makeCounter(start = 0) {
-  // TODO
+  let count = start;
+  return {
+    increment: () => ++count,
+    decrement: () => --count,
+    value: () => count,
+    reset: () => (count = start),
+  }
 }
 
 /**
@@ -40,7 +49,16 @@ export function makeCounter(start = 0) {
  * init() → returns 42 (no log)
  */
 export function once(fn) {
-  // TODO
+let called = false;
+  let result;
+
+  return (...args) => {
+    if (!called) {
+      called = true;
+      result = fn(...args);
+    }
+    return result;
+  }
 }
 
 /**
@@ -48,7 +66,9 @@ export function once(fn) {
  * compose(f, g)(x) === f(g(x))
  */
 export function compose(f, g) {
-  // TODO
+  return (...args) => {
+    return f(g(...args))
+  }
 }
 
 /**
@@ -59,5 +79,11 @@ export function compose(f, g) {
  * spy(1, 5) → 5;  spy.calls → 1
  */
 export function trackCalls(fn) {
-  // TODO
+ const tracked = (...args) => {
+    tracked.calls++;
+    return fn(...args);
+  };
+
+  tracked.calls = 0;
+  return tracked;
 }
