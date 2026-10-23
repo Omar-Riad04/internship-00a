@@ -7,7 +7,7 @@ import { getUser, getPosts, slowEndpoint } from "./api.js";
  * hint: new Promise(resolve => setTimeout(...))
  */
 export function wait(ms) {
-  // TODO
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
@@ -15,7 +15,8 @@ export function wait(ms) {
  * await getUserName(1) → "Ada Lovelace"
  */
 export async function getUserName(id) {
-  // TODO
+  const user = await getUser(id);
+  return user.name;
 }
 
 /**
@@ -24,7 +25,11 @@ export async function getUserName(id) {
  * Bonus: can you fetch the user and posts IN PARALLEL?
  */
 export async function getUserWithPosts(id) {
-  // TODO
+ const [user, posts] = await Promise.all([
+    getUser(id),
+    getPosts(id),
+  ]);
+  return { ...user, posts };
 }
 
 /**
@@ -33,7 +38,8 @@ export async function getUserWithPosts(id) {
  * Must be fast: 3 users should take ~50ms, not ~150ms.
  */
 export async function getManyNames(ids) {
-  // TODO
+  const users = await Promise.all(ids.map(id => getUser(id)));
+  return users.map(user => user.name);
 }
 
 /**
@@ -41,7 +47,12 @@ export async function getManyNames(ids) {
  * hint: try / catch
  */
 export async function safeGetUser(id) {
-  // TODO
+  try {
+    const user = await getUser(id);
+    return user;
+  } catch (error) {
+    return null;
+  }
 }
 
 /**
@@ -50,7 +61,10 @@ export async function safeGetUser(id) {
  * hint: Promise.race between the request and a promise that rejects after timeoutMs
  */
 export async function withTimeout(ms, timeoutMs) {
-  // TODO
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error("Timeout")), timeoutMs);
+  });
+  return Promise.race([slowEndpoint(ms), timeoutPromise]);
 }
 
 /**
@@ -59,5 +73,17 @@ export async function withTimeout(ms, timeoutMs) {
  * Fetch in parallel. hint: Promise.allSettled keeps the order of ids.
  */
 export async function fetchReport(ids) {
-  // TODO
+  const results = await Promise.allSettled(ids.map(id => getUser(id)));
+  const found = [];
+  const missing = [];
+
+  results.forEach((result, index) => {
+    if (result.status === "fulfilled") {
+      found.push(result.value.name);
+    } else {
+      missing.push(ids[index]);
+    }
+  });
+
+  return { found, missing };
 }
