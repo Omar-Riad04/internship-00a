@@ -3,12 +3,16 @@
 
 /** capitalize("hELLO") → "Hello" */
 export function capitalize(word) {
-  // TODO
+  if (!word) return "";
+  return word[0].toUpperCase() + word.slice(1).toLowerCase();
 }
 
 /** titleCase("the lord of the rings") → "The Lord Of The Rings" */
 export function titleCase(sentence) {
-  // TODO
+  return sentence
+    .split(" ")
+    .map(word => capitalize(word))
+    .join(" ");
 }
 
 /**
@@ -17,12 +21,20 @@ export function titleCase(sentence) {
  * isPalindrome("hello") → false
  */
 export function isPalindrome(text) {
-  // TODO
+  const clean = text.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const reverse = clean.split("").reverse().join("");
+  return clean === reverse;
 }
 
 /** Count vowels (a, e, i, o, u — any case). Use a for...of loop. */
 export function countVowels(text) {
-  // TODO
+  let count = 0;
+  for (const char of text.toLowerCase()) {
+    if ("aeiou".includes(char)) {
+      count++;
+    }
+  }
+  return count;
 }
 
 /**
@@ -32,7 +44,11 @@ export function countVowels(text) {
  * truncate("Hi", 8)          → "Hi"
  */
 export function truncate(text, max) {
-  // TODO
+  if (text.length > max) {
+    return text.slice(0, max - 3) + "...";
+  }
+  return text;
+
 }
 
 /**
@@ -40,7 +56,11 @@ export function truncate(text, max) {
  * multiplicationTable(3, 4) → ["3 x 1 = 3", "3 x 2 = 6", "3 x 3 = 9", "3 x 4 = 12"]
  */
 export function multiplicationTable(n, upTo) {
-  // TODO
+  const table = [];
+  for (let i = 1; i <= upTo; i++) {
+    table.push(`${n} x ${i} = ${n * i}`);
+  }
+  return table;
 }
 
 /**
@@ -49,7 +69,16 @@ export function multiplicationTable(n, upTo) {
  * firstRepeatedWord("I think therefore I am") → "I"
  */
 export function firstRepeatedWord(sentence) {
-  // TODO
+  const words = sentence.split(" ");
+  const seen = new Set();
+
+  for (const word of words) {
+    if (seen.has(word)) {
+      return word;
+    }
+    seen.add(word);
+  }
+  return null;
 }
 
 /**
@@ -57,5 +86,16 @@ export function firstRepeatedWord(sentence) {
  * (a letter appearing once has no number)
  */
 export function compress(text) {
-  // TODO
+  if (!text) return "";
+  let result = "";
+  let count = 1;
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === text[i + 1]) {
+      count++;
+    } else {
+      result += text[i] + (count > 1 ? count : "");
+      count = 1;
+    }
+  }
+  return result;
 }
