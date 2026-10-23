@@ -12,23 +12,34 @@
  * describeType([1,2]) → "array"
  */
 export function describeType(value) {
-  // TODO
+if (value === null) {
+    return "null";
+  }
+
+if (Array.isArray(value)) {
+    return "array";
+  }
+
+  return typeof value;
+
 }
 
 /**
  * Use a template literal to build an introduction.
  * greet("Ada", 36) → "Hi, I'm Ada and I'm 36 years old."
  */
-export function greet(name, age) {
-  // TODO
+export function greet(name, age) 
+{
+  return `Hi, I'm ${name} and I'm ${age} years old.`;
 }
-
 /**
  * Return true if `value` is truthy, false if it's falsy.
  * Must return a real boolean (not just the value itself).
  */
 export function isTruthy(value) {
-  // TODO
+
+  return Boolean(value);
+  
 }
 
 /**
@@ -36,7 +47,10 @@ export function isTruthy(value) {
  * swap(1, 2) → [2, 1]
  */
 export function swap(a, b) {
-  // TODO
+  let x = a;
+  let y = b;
+  [x, y] = [y, x];
+  return [x, y];q
 }
 
 /**
@@ -46,7 +60,8 @@ export function swap(a, b) {
  * celsiusToFahrenheit(37.5) → 99.5
  */
 export function celsiusToFahrenheit(celsius) {
-  // TODO
+  const fahrenheit = celsius * 9 / 5 + 32;
+  return Math.round(fahrenheit * 10) / 10;
 }
 
 /**
@@ -57,5 +72,9 @@ export function celsiusToFahrenheit(celsius) {
  * hint: Number(...) and Number.isNaN(...)
  */
 export function toNumber(text) {
-  // TODO
+  const number = Number(text);
+  if (Number.isNaN(number)) {
+    return 0;
+  }
+  return number;
 }
