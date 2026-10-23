@@ -5,8 +5,8 @@
  * Use DESTRUCTURING in the parameter list.
  * getFullName({ firstName: "Ada", lastName: "Lovelace" }) → "Ada Lovelace"
  */
-export function getFullName(person) {
-  // TODO: hint — change the parameter to ({ firstName, lastName })
+export function getFullName({ firstName, lastName }) {
+  return `${firstName} ${lastName}`;
 }
 
 /**
@@ -15,7 +15,7 @@ export function getFullName(person) {
  * updateUser({ name: "Ada", age: 36 }, { age: 37 }) → { name: "Ada", age: 37 }
  */
 export function updateUser(user, changes) {
-  // TODO
+  return { ...user, ...changes };
 }
 
 /**
@@ -24,7 +24,13 @@ export function updateUser(user, changes) {
  * hint: .toLowerCase(), .split(" "), and an object as a tally
  */
 export function countWords(sentence) {
-  // TODO
+  const words = sentence.toLowerCase().split(" ");
+  const tally = {};
+
+  for (const word of words) {
+    tally[word] = (tally[word] || 0) + 1;
+  }
+  return tally;
 }
 
 /**
@@ -33,7 +39,9 @@ export function countWords(sentence) {
  * hint: Object.entries + map + Object.fromEntries
  */
 export function invert(obj) {
-  // TODO
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [value, key])
+  )
 }
 
 /**
@@ -44,7 +52,7 @@ export function invert(obj) {
  * hint: ?. and ??
  */
 export function getCity(user) {
-  // TODO
+  return user?.address?.city ?? "Unknown";
 }
 
 /**
@@ -57,5 +65,22 @@ export function getCity(user) {
  *  - statement()       returns "<owner>: $<balance>"   e.g. "Ada: $50"
  */
 export function createBankAccount(owner) {
-  // TODO
+  return {
+    owner,
+    balance: 0,
+    deposit(amount) {
+      this.balance += amount;
+      return this.balance;
+    },
+    withdraw(amount) {
+      if (amount > this.balance) {
+        throw new Error("Insufficient funds");
+      }
+      this.balance -= amount;
+      return this.balance;
+    },
+    statement() {
+      return `${this.owner}: $${this.balance}`;
+    },
+  }
 }
