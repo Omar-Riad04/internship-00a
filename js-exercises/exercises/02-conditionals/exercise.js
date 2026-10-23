@@ -9,7 +9,14 @@
  *  otherwise the number as a string ("7")
  */
 export function fizzBuzz(n) {
-  // TODO
+  if (n % 3 === 0 && n % 5 === 0) {
+    return "FizzBuzz";
+  } else if (n % 3 === 0) {
+    return "Fizz";
+  } else if (n % 5 === 0) {
+    return "Buzz";
+  }
+  return n.toString();
 }
 
 /**
@@ -18,7 +25,22 @@ export function fizzBuzz(n) {
  * If score is below 0, above 100, or not a number → "Invalid"
  */
 export function grade(score) {
-  // TODO
+  if (typeof score !== "number" || Number.isNaN(score) || score < 0 || score > 100) {
+    return "Invalid";
+  }
+  if (score >= 90) {
+    return "A";
+  }
+  if (score >= 80) {
+    return "B";
+  }
+  if (score >= 70) {
+    return "C";
+  }
+  if (score >= 60) {
+    return "D";
+  }
+  return "F";
 }
 
 /**
@@ -29,7 +51,19 @@ export function grade(score) {
  * Must be case-insensitive: "SUNDAY" and "Sunday" both work.
  */
 export function dayType(day) {
-  // TODO
+  switch (day.toLowerCase()) {
+    case "saturday":
+    case "sunday":
+      return "Weekend";
+    case "monday":
+    case "tuesday":
+    case "wednesday":
+    case "thursday":
+    case "friday":
+      return "Weekday";
+    default:
+      return "Unknown";
+  }
 }
 
 /**
@@ -37,7 +71,7 @@ export function dayType(day) {
  * Children under 12 pay 5, seniors 65 and over pay 7, everyone else pays 10.
  */
 export function ticketPrice(age) {
-  // TODO
+  return age < 12 ? 5 : age >= 65 ? 7 : 10;
 }
 
 /**
@@ -47,7 +81,8 @@ export function ticketPrice(age) {
  * hint: which operator — || or ?? ?
  */
 export function displayName(nickname) {
-  // TODO
+  return nickname ?? "Anonymous";
+
 }
 
 /**
@@ -56,5 +91,6 @@ export function displayName(nickname) {
  * person = { age: number, hasLicense: boolean, withVip: boolean }
  */
 export function canRentCar(person) {
-  // TODO
+  return (person.age >= 21 && person.hasLicense) || person.withVip;
+
 }
